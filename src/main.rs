@@ -26,14 +26,14 @@ fn main() -> Result <(), Error>{
             .index(3))
         .get_matches();
 
-    let mut infile = File::open(matches.value_of("infile").unwrap())?;
-    let mut outfile = File::create(matches.value_of("outfile").unwrap())?;
+    let infile = File::open(matches.value_of("infile").unwrap())?;
+    let outfile = File::create(matches.value_of("outfile").unwrap())?;
     let mut reader = BufReader::new(infile);
     let mut writer = BufWriter::new(outfile);
     let ndupes = usize::from_str_radix(matches.value_of("ndupes").unwrap(), 10).unwrap();
     for _ in 0..ndupes { 
         copy(&mut reader, &mut writer)?;
-        reader.seek(SeekFrom::Start(0));
+        reader.seek(SeekFrom::Start(0))?;
     }
     Ok(())
 }
