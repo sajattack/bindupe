@@ -1,10 +1,5 @@
 use std::fs::File;
-use std::io::prelude::*;
-use std::io::BufReader;
-use std::io::BufWriter;
-use std::io::Error;
-use std::io::copy;
-use std::io::SeekFrom;
+use std::io::{prelude::*, BufReader, BufWriter, Error, copy, SeekFrom};
 use clap::{Arg, App};
 
 fn main() -> Result <(), Error>{
@@ -30,7 +25,7 @@ fn main() -> Result <(), Error>{
     let outfile = File::create(matches.value_of("outfile").unwrap())?;
     let mut reader = BufReader::new(infile);
     let mut writer = BufWriter::new(outfile);
-    let ndupes = usize::from_str_radix(matches.value_of("ndupes").unwrap(), 10).unwrap();
+    let ndupes = matches.value_of("ndupes").unwrap().parse::<usize>().unwrap();
     for _ in 0..ndupes { 
         copy(&mut reader, &mut writer)?;
         reader.seek(SeekFrom::Start(0))?;
